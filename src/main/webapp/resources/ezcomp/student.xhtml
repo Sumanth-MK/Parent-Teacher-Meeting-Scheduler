@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="student" type="edu.iit.sat.itmd4515.smk1.domain.Student" required="true"/>
+        <cc:attribute name="operation" type="java.lang.String" required="true"/>
+        <cc:attribute name="action" required="false" method-signature="java.lang.String action()"/>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            
+            <h:panelGroup 
+                rendered="#{not cc.attrs.operation.equalsIgnoreCase('create')}"
+                layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentId" value="Student ID = #{cc.attrs.student.id}"  styleClass="form-label" />
+                <h:inputHidden
+                    id="studentId" 
+                    value="#{cc.attrs.student.id}" />
+                <h:messages for="studentId" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+            
+            
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentName" value="Student Name" styleClass="form-label" />
+                <h:inputText 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="studentName" 
+                    p:placeholder="Student Name" 
+                    value="#{cc.attrs.student.name}" />
+                <h:messages for="studentName" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentDOB" value="Student Date of Birth" styleClass="form-label" />
+                <h:inputText 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="studentDOB" 
+                    p:type="date" 
+                    value="#{cc.attrs.student.dateofbirth}" >
+                    <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:messages for="studentDOB" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentclass" value="Student Class" styleClass="form-label" />
+                <h:selectOneMenu 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    disabled="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="studentclass" 
+                    value="#{cc.attrs.student.sclass}">
+                    <f:selectItems value="#{teacherNewStudentController.studentClass}"
+                                   var="studentclass"
+                                   itemLabel="#{studentclass.description}"
+                                   itemValue="#{studentclass}"/>
+                </h:selectOneMenu>
+            </h:panelGroup>
+            <br/>
+            <br/>
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentGPA" value="Student GPA" styleClass="form-label" />
+                <h:inputText 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="studentGPA" 
+                    p:placeholder="Student Grade" 
+                    value="#{cc.attrs.student.gpa}" />
+                <h:messages for="studentGPA" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('create')}"
+                styleClass="btn btn-primary mb-3"
+                value="Add Student" 
+                action="#{cc.attrs.action}"/>
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('update')}"
+                styleClass="btn btn-primary mb-3"
+                value="Update Student" 
+                action="#{cc.attrs.action}"/>
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('delete')}"
+                styleClass="btn btn-primary mb-3"
+                value="Confirm Delete" 
+                action="#{cc.attrs.action}"/>
+        </h:form>
+    </cc:implementation>
+</html>

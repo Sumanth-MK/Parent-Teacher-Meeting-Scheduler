@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <ui:insert name="metadata" />
+    
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>    
+        <title><ui:insert name="title">Default Template Title</ui:insert></title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"/>
+        <h:outputStylesheet library="css" name="navbar-top-fixed.css" />
+    </h:head>
+    <h:body>
+
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">School Meeting Scheduler</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <h:link outcome="/welcome.xhtml"
+                                    class="#{fn:startsWith(view.viewId,'/welcome') ? 'nav-link active' : 'nav-link'}"
+                                    value="Home"/>
+                        </li>
+                        <ui:fragment rendered="#{loginController.admin}">
+                            <li class="nav-item">
+                                <h:link 
+                                    outcome="/admin/welcome.xhtml"
+                                    class="#{fn:startsWith(view.viewId,'/admin') ? 'nav-link active' : 'nav-link'}"
+                                    value="Admin"/>                        
+                            </li>
+                        </ui:fragment>
+
+                        <ui:fragment rendered="#{loginController.parent}">
+                            <li class="nav-item">
+                                <h:link 
+                                    outcome="/parent/welcome.xhtml"
+                                    class="#{fn:startsWith(view.viewId,'/parent') ? 'nav-link active' : 'nav-link'}"
+                                    value="Parent"/>                        
+                            </li>
+                        </ui:fragment>
+
+                        <ui:fragment rendered="#{loginController.teacher}">
+                            <li class="nav-item">
+                                <h:link 
+                                    outcome="/teacher/welcome.xhtml"
+                                    class="#{fn:startsWith(view.viewId,'/teacher') ? 'nav-link active' : 'nav-link'}"
+                                    value="Teacher"/>                        
+                            </li>
+                        </ui:fragment>
+                    </ul>
+
+                    <h:form class="d-flex">
+                        <h:commandButton action="#{loginController.doLogout()}" 
+                                         value="Logout"
+                                         class="btn btn-outline-success"/>
+                    </h:form>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <div class="bg-light p-5 rounded">
+                <h1><ui:insert name="title">Default Template Title</ui:insert></h1>
+                <ui:insert name="content">Default Template Content</ui:insert>
+            </div>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    </h:body>
+</html>
+

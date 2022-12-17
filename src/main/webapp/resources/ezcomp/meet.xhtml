@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="meet" type="edu.iit.sat.itmd4515.smk1.domain.Meeting" required="true"/>
+        <cc:attribute name="operation" type="java.lang.String" required="true"/>
+        <cc:attribute name="action" required="false" method-signature="java.lang.String action()"/>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+
+            <h:panelGroup 
+                rendered="#{not cc.attrs.operation.equalsIgnoreCase('create')}"
+                layout="block" styleClass="mb-3">
+                <h:outputLabel for="meetId" value="Student ID = #{cc.attrs.meet.id}"  styleClass="form-label" />
+                <h:inputHidden
+                    id="meetId" 
+                    value="#{cc.attrs.meet.id}" />
+                <h:messages for="meetId" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+
+
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="studentId" value="You are scheduling the meeting for: #{cc.attrs.meet.student.name}" styleClass="form-label" />
+                <h:inputHidden
+                    id="studentId" 
+                    value="#{cc.attrs.meet.student.id}" />
+                <h:messages for="studentId" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="meetDate" value="Date of Meeting" styleClass="form-label" />
+                <h:inputText 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="meetDate" 
+                    p:type="date" 
+                    value="#{cc.attrs.meet.date}" >
+                    <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+                </h:inputText>
+                <h:messages for="meetDate" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="meetTime" value="Time of Meeting" styleClass="form-label" />
+                <h:inputText 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="meetTime" 
+                    p:type="time" 
+                    value="#{cc.attrs.meet.time}" >
+                    <f:convertDateTime type="localTime" pattern="HH:mm"/>
+                </h:inputText>
+                <h:messages for="meetTime" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="meetType" value="Type of Appointment" styleClass="form-label" />
+                <h:selectOneMenu 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    disabled="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="meetType" 
+                    value="#{cc.attrs.meet.type}">
+                    <f:selectItem itemLabel="Grade Discussion" itemValue="GradeDiscussion" />
+                    <f:selectItem itemLabel="Behavioral Discussion" itemValue="BehavioralDiscussion" />
+                    <f:selectItem itemLabel="Office Works" itemValue="OfficeWorks" />
+                    <f:selectItem itemLabel="Miscellaneous" itemValue="Miscellaneous" />
+                </h:selectOneMenu>
+                <h:messages for="meetType" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+
+            <h:panelGroup layout="block" styleClass="mb-3">
+                <h:outputLabel for="parent" value="Parent Name" styleClass="form-label" />
+                <h:selectOneMenu 
+                    readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    disabled="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}"
+                    styleClass="form-control"
+                    id="parent" 
+                    converter="parentConverter"
+                    value="#{cc.attrs.meet.parent}">
+                    <f:selectItems 
+                        value="#{parentService.findAll()}"
+                        var="parent"
+                        itemLabel="#{parent.name}"
+                        itemValue="#{parent}" />
+                </h:selectOneMenu>
+                <h:messages for="parent" />
+            </h:panelGroup>
+            <br/>
+            <br/>
+            
+
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('create')}"
+                styleClass="btn btn-primary mb-3"
+                value="Schedule Meeting" 
+                action="#{cc.attrs.action}"/>
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('update')}"
+                styleClass="btn btn-primary mb-3"
+                value="Update Meeting" 
+                action="#{cc.attrs.action}"/>
+            <h:commandButton
+                rendered="#{cc.attrs.operation.equalsIgnoreCase('delete')}"
+                styleClass="btn btn-primary mb-3"
+                value="Cancel Meeting?" 
+                action="#{cc.attrs.action}"/>
+        </h:form>
+    </cc:implementation>
+</html>
